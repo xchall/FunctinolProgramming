@@ -10,7 +10,8 @@ let main () =
     let h = Console.ReadLine() |> double
     let S = circleS r
     Console.WriteLine($"Площадь круга = {S}")
-    let findV = circleS >> cylinderV 
-    Console.WriteLine($"Объем цилиндра = {(findV r h)}")
+    let findV = cylinderV h
+    let ans = findV S
+    Console.WriteLine($"Объем цилиндра = {ans}")
 
-main () //запускаем прогу
+main ()
