@@ -51,11 +51,24 @@ let sumDeviders num =
             loop (x-1) newAcc f
     loop num 0 vzaimnoProst
 
+//20
+let choose nomer = 
+    match nomer with 
+        | 1 -> amountDeviders
+        | 2 -> minNechCifr
+        | 3 -> sumDeviders
 let main () = 
     let ans1 = amountDeviders 15
-    Console.WriteLine($"Количество делителей числа, не делящихся на 3 = {ans1}")
+    Console.WriteLine($"1. Количество делителей числа, не делящихся на 3 = {ans1}")
     let ans2 = minNechCifr 667372
-    Console.WriteLine($"Минимальная нечетная цифра (если ответ = 10, то нечетных цифр нет) = {ans2}")
+    Console.WriteLine($"2. Минимальная нечетная цифра (если ответ = 10, то нечетных цифр нет) = {ans2}")
     let ans3 = sumDeviders 76
-    Console.WriteLine($"Cумма всех делителей числа, взаимно простых с суммой \nцифр числа и не взаимно простых с произведением цифр числа = {ans3}")
+    Console.WriteLine($"3. Cумма всех делителей числа, взаимно простых с суммой \nцифр числа и не взаимно простых с произведением цифр числа = {ans3}")
+
+    let nomer = Console.ReadLine() |> int
+    let x = Console.ReadLine() |> int
+    let new_func = choose nomer
+    Console.WriteLine(new_func(x))
+
+
 main()
