@@ -43,6 +43,12 @@ let CheckGlobalMin list (ind:int) =
                         else CheckGlobalMin1 t num (curnum + 1)
                         
     CheckGlobalMin1 list ind 1
+// используя List
+let CheckGlobalMin2 list (ind:int) = 
+    let min = list |> List.min 
+    let elem = List.tryItem (ind-1) list
+    if elem <> None then (if Option.get elem = min then true else false) else false
+    
 
 //1.15
 //локальный минимум - меньше левого и правого соседа если они есть
@@ -61,6 +67,11 @@ let CheckLocalMin list (ind:int) =
                         if num = curnum then (if h < prev then (CheckNextLess t h) else false )
                         else CheckLocalMin1 t num (curnum + 1) h        
     CheckLocalMin1 list ind 1 9999
+
+let CheckLocalMin2 list (ind:int) = 
+    let left = List.tryItem (ind-1-1) list
+    let right = List.tryItem (ind+1-1) list
+    (if right <> None then (if Option.get right > ind then true  else false) else true) && (if left <> None then (if Option.get left > ind then true  else false) else true)
 
 //1.25
 let rec GetABSpisok2 list (b:int) curnum =
@@ -84,6 +95,11 @@ let FindMaxInInterval list (a:int) (b:int) =
     let newList = GetABSpisok1 list a b 1
     listMax newList
 
+
+let FindMaxInInterval2 list (a:int) (b:int) =
+    let newList = list |> List.skip (a-1) |> List.take (b - a + 1) // take берет указанное количество элементов с начала списка
+    printfn "%A" newList
+    List.max newList
 //1.35
 let ClosestNum list (num: float) =
     let rec ClosestNum1 list num f (acc:float)  =
@@ -202,16 +218,18 @@ let sortByMediana (strings: string list) =
 
 [<EntryPoint>]
 let main argv = 
-    //let l = readData()
+    let l = readData()
     //1.5
-    //Console.WriteLine($"Глобальный минимум {CheckGlobalMin l 4}")
+    Console.WriteLine($"Глобальный минимум {CheckGlobalMin l 4}")
+    Console.WriteLine($"Глобальный минимум {CheckGlobalMin2 l 4}")
 
     //1.15
-    //Console.WriteLine($"Локальный минимум {CheckLocalMin l 4}")
+    Console.WriteLine($"Локальный минимум {CheckLocalMin l 4}")
+    Console.WriteLine($"Локальный минимум {CheckLocalMin2 l 4}")
 
     //1.25
-    //Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval l 3 6}")
-
+    Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval l 3 6}")
+    Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval2 l 3 6}")
     //1.35
     //let l_v = [3.23; 45.1; 76.7; 8.12; 123.123; 48.1008; 48.9; 17.6]
     //Console.WriteLine($"Ближайшее к числу 48,6 в массиве = {ClosestNum l_v 48.6}")
