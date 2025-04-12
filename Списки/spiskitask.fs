@@ -144,13 +144,41 @@ let sortByFrequency (list:int list) =  // Основная функция
     list |> freqPairs [] |> sortPairsByFreq |> resList
 
 
+//10
+let rec readListStr n = 
+    if n=0 then []
+    else
+    let Head = System.Console.ReadLine()
+    let Tail = readListStr (n-1)
+    Head::Tail
+let readDataStr() = 
+    let n=System.Convert.ToInt32(System.Console.ReadLine())
+    readListStr n
+
+let sortedByLength strings: string list = 
+    List.sortBy (fun s -> s.Length) strings 
+   
+
 //17
 
 
 //18
+let cifrsToNumber (arr: int[]) =
+    arr |> Array.fold (fun acc cifr -> acc * 10 + cifr) 0 //преобразуем массив цифр в число
 
+let inputArray() = 
+    let inp = Console.ReadLine() //получили строку
+    inp.Split([|' '|]) |> Array.map int |> Array.filter (fun x -> (x >= 0 && x <= 9)) 
 
 //19
+//списки нельзя менять после создания, массиы - мутабельны (изменяемы)
+let MixString (str: string) =
+    let r = Random() // экземпляр генератора случайных чисел
+    str.ToCharArray()
+    |> Array.toList 
+    |> List.sortBy (fun _ -> r.Next()) // анонимная функция принимает элемент списка но игнорирует его _ и возвращает число из рандома
+    |> List.toArray // из списка в массив
+    |> String 
 
 
 //20
@@ -176,6 +204,19 @@ let main argv =
     //Console.WriteLine($"Сумма элементов которые попадают в интервал 4 10 равна {SumNumsInInterval  l 4 10}")
 
     //1.55
-    let m = [5;6;2;2;3;3;3;5;5;5] 
-    printfn "%A" (sortByFrequency m)
+    //let m = [5;6;2;2;3;3;3;5;5;5] 
+    //printfn "%A" (sortByFrequency m)
+
+    //10
+    //let strings = readDataStr()
+    //printfn "%A" (sortedByLength strings)
+
+    //18
+    //let arr1 = inputArray()
+    //let arr2 = inputArray()
+    //Console.WriteLine($"Разность arr1 - arr2 = {(cifrsToNumber arr1) - (cifrsToNumber arr2)}")
+
+    //19
+    //let str = Console.ReadLine()
+    //Console.WriteLine($"Перемешенная строка {MixString str}")
     0
