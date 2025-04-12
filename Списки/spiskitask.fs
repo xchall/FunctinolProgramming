@@ -182,7 +182,23 @@ let MixString (str: string) =
 
 
 //20
+let mediana (s: string) =
+    let str = s.ToCharArray() |> Array.sort
+    let l= str.Length
+    if l % 2 = 1 then float str.[l / 2]
+    else (float str.[l / 2 - 1] + float str.[l / 2]) / 2.0 // для четной длины среднее арифметической значений по середине
 
+// Основная функция сортировки
+let sortByMediana (strings: string list) =
+    let rec sortByMediana1 list res = //list список пар (строка, ее медиана)
+        match list with
+        | [] -> res 
+        | _ ->
+            let medians = list |> List.map (fun s -> (s, mediana s))
+            let maxMediana = medians |> List.maxBy snd
+            let newList = list |> List.filter (fun y -> y <> (fst maxMediana))
+            sortByMediana1 newList ((fst maxMediana) :: res)
+    sortByMediana1 strings []
 
 [<EntryPoint>]
 let main argv = 
@@ -219,4 +235,8 @@ let main argv =
     //19
     //let str = Console.ReadLine()
     //Console.WriteLine($"Перемешенная строка {MixString str}")
+
+    //20
+    let list_str = ["max"; "recursion"; "film"; "standart"; "pianino"; "voice"; "snowman"]
+    printfn "%A"  (sortByMediana list_str)
     0
