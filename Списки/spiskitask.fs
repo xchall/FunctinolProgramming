@@ -111,6 +111,8 @@ let ClosestNum list (num: float) =
 
     ClosestNum1 list num (fun x y z-> (if abs (x-y) < abs (x-z) then y else z)) 99999
 
+let ClosestNum2 list (num: float) =
+    list |> List.minBy (fun x -> abs(x-num))
 //1.45
 let SumNumsInInterval list (a:int) (b:int) = 
     let rec SumNumInInterval1 list a b acc = 
@@ -122,6 +124,8 @@ let SumNumsInInterval list (a:int) (b:int) =
                         else SumNumInInterval1 t a b acc
     SumNumInInterval1 list a b 0
 
+let SumNumsInInterval2 list (a:int) (b:int) = 
+    list |> List.sumBy (fun x -> if (x >= a && x <= b) then x else 0)
 //1.55
 let rec frequency list elem count =
         match list with
@@ -159,7 +163,9 @@ let rec resList pairs =
 let sortByFrequency (list:int list) =  // Основная функция
     list |> freqPairs [] |> sortPairsByFreq |> resList
 
-
+// с использолванием List
+let sortByFrequency2 (list:int list) =  
+    list |> freqPairs [] |> List.sortByDescending snd |> resList //заменили только функцию сортировки
 //10
 let rec readListStr n = 
     if n=0 then []
@@ -218,28 +224,30 @@ let sortByMediana (strings: string list) =
 
 [<EntryPoint>]
 let main argv = 
-    let l = readData()
+    //let l = readData()
     //1.5
-    Console.WriteLine($"Глобальный минимум {CheckGlobalMin l 4}")
-    Console.WriteLine($"Глобальный минимум {CheckGlobalMin2 l 4}")
+    //Console.WriteLine($"Глобальный минимум {CheckGlobalMin l 4}")
+    //Console.WriteLine($"Глобальный минимум {CheckGlobalMin2 l 4}")
 
     //1.15
-    Console.WriteLine($"Локальный минимум {CheckLocalMin l 4}")
-    Console.WriteLine($"Локальный минимум {CheckLocalMin2 l 4}")
+    //Console.WriteLine($"Локальный минимум {CheckLocalMin l 4}")
+    //Console.WriteLine($"Локальный минимум {CheckLocalMin2 l 4}")
 
     //1.25
-    Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval l 3 6}")
-    Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval2 l 3 6}")
+    //Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval l 3 6}")
+    //Console.WriteLine($"Максимальный элемент в интервале 3 6 это {FindMaxInInterval2 l 3 6}")
     //1.35
     //let l_v = [3.23; 45.1; 76.7; 8.12; 123.123; 48.1008; 48.9; 17.6]
     //Console.WriteLine($"Ближайшее к числу 48,6 в массиве = {ClosestNum l_v 48.6}")
+    //Console.WriteLine($"Ближайшее к числу 48,6 в массиве = {ClosestNum2 l_v 48.6}")
 
     //1.45
     //Console.WriteLine($"Сумма элементов которые попадают в интервал 4 10 равна {SumNumsInInterval  l 4 10}")
-
+    //Console.WriteLine($"Сумма элементов которые попадают в интервал 4 10 равна {SumNumsInInterval2  l 4 10}")
     //1.55
-    //let m = [5;6;2;2;3;3;3;5;5;5] 
-    //printfn "%A" (sortByFrequency m)
+    let m = [5;6;2;2;3;3;3;5;5;5] 
+    printfn "%A" (sortByFrequency m)
+    printfn "%A" (sortByFrequency2 m)
 
     //10
     //let strings = readDataStr()
@@ -255,6 +263,6 @@ let main argv =
     //Console.WriteLine($"Перемешенная строка {MixString str}")
 
     //20
-    let list_str = ["max"; "recursion"; "film"; "standart"; "pianino"; "voice"; "snowman"]
-    printfn "%A"  (sortByMediana list_str)
+    //let list_str = ["max"; "recursion"; "film"; "standart"; "pianino"; "voice"; "snowman"]
+    //printfn "%A"  (sortByMediana list_str)
     0
