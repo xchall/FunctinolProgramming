@@ -182,9 +182,27 @@ let sortedByLength strings: string list =
    
 
 //17
+let isSimple (x: int) = //проверка числа на простоту
+    match x with 
+        | x when x <= 1 -> false
+        | _ ->
+                let sqrtX = int (sqrt (float x)) //проверим делимиость до корня x
+                [2..sqrtX] |> List.forall (fun y -> x % y <> 0) //forall возвращает false, если хотя бы 1 элемент не удовлетворяет условию
 
+let simpleDividers (x: int) = //получим простые делители числа
+    match x with
+        | 0 -> []
+        | _ -> 
+                let X = abs x
+                [2..X] |> List.filter (fun y -> X % y = 0 && isSimple y)//если делитель и простой
 
-//18
+let checkIsAllDivsInList list x =
+    let divs = simpleDividers x
+    divs |> List.forall (fun div -> List.contains div list)
+
+let elemsAllSimpledivs list =  //получим ответ на 17 задание
+    list |> List.filter (fun x -> checkIsAllDivsInList list x)
+    //18
 let cifrsToNumber (arr: int[]) =
     arr |> Array.fold (fun acc cifr -> acc * 10 + cifr) 0 //преобразуем массив цифр в число
 
@@ -253,6 +271,9 @@ let main argv =
     //let strings = readDataStr()
     //printfn "%A" (sortedByLength strings)
 
+    //17
+    let ll = [2; 3; 5; 10; 14; 15; 21]
+    printfn "%A" (elemsAllSimpledivs ll) //должно быть [2; 3; 5; 10; 15]
     //18
     //let arr1 = inputArray()
     //let arr2 = inputArray()
