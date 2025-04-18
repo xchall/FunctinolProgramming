@@ -61,10 +61,24 @@ type Circle(radiusp:float)=
 
     interface IPrint with
         member this.Print() = Console.WriteLine(this.ToString())
-   
+
+// || - банановые клипсы
+// discriminatedunion
+type Figure =
+    | Rect of width : float * height : float
+    | Squ of side : float
+    | Circ of radius : float
+
+let findS (figure : Figure) = 
+   match figure with
+   | Rect (a, b) -> a*b
+   | Squ a -> a * a
+   | Circ r -> Math.PI * r * r
+     
 
 [<EntryPoint>]
 let main argv =
+    //4.1
     let s1 = Square(4)
     let ss1 = s1 :> IPrint //явное приведение к интрефейсу
     ss1.Print()
@@ -80,5 +94,12 @@ let main argv =
     let rr2 = r1 :> IPrint 
     rr2.Print()
 
+    //4.2
+    let rect = Rect(5, 4)
+    let sq = Squ 5.6
+    let circle = Circ 3.2
+    Console.WriteLine($"Площадь прямоугольника {findS rect}")
+    Console.WriteLine($"Площадь квадрата {findS sq}")
+    Console.WriteLine($"Площадь круга {findS circle}")
     0 
 
