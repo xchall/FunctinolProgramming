@@ -25,3 +25,12 @@ son(X) :- son(Y,X), print(Y),nl,fail.
 
 husband(X,Y) :- man(X), woman(Y), parent(X,Z), parent(Y, Z).
 husband(X) :- woman(X), husband(Y,X), print(Y).
+
+%z 3
+grand_so(X,Y) :- parent(Y,Z), parent(Z,X).
+grand_sons(X) :- grand_so(Y,X), print(Y), nl, fail.
+
+grand_ma_and_da(X,Y) :- (woman(Y),woman(X),parent(Y,Z), parent(Z,X));(woman(Y),woman(X),parent(X,Z), parent(Z,Y)).
+
+nephew(X,Y) :- woman(X), b_s(Y,Z), parent(Z,X).
+nephew(X) :- nephew(Y,X), print(Y), nl, fail. 
