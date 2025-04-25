@@ -17,3 +17,11 @@ b_and_s(X) :- sister(X,Y), print(Y), nl, fail.
 
 b_s(X,Y) :- sister(X,Y); brother(X,Y); b_and_s(X,Y).
 b_s(X) :- b_s(X,Y), print(Y), nl, fail.
+
+%var 11
+%z 2
+son(X,Y) :- man(X), parent(Y, X).
+son(X) :- son(Y,X), print(Y),nl,fail.
+
+husband(X,Y) :- man(X), woman(Y), parent(X,Z), parent(Y, Z).
+husband(X) :- woman(X), husband(Y,X), print(Y).
