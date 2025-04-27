@@ -35,18 +35,27 @@ nod_down(X,Y,R):- X > Y, nod_down(Y,X,R).
 % 11 23 35
 
 find_closest_number :- %пишем только его в swi
-    read_list(X, Y),
+    read_list_and_num(X, Y),
     find_closest_num(X,Y, Z),
     write_answer(Z).
 
-read_list(X, Y) :-
+find_unic_element :-
+	read_list(X),
+	find_unic_elem(X,Y),
+	write_answer(Y).
+
+read_list_and_num(X, Y) :-
     write('Enter list: '),
     read(X),
     write('Enter number: '),
     read(Y).
 
+read_list(X) :-
+    write('Enter list: '),
+    read(X).
+
 write_answer(R) :-
-    write('Closest number is: '), write(R), nl.
+    write('Answer is: '), write(R), nl.
 
 %рекурсия вниз
 find_closest_num(X,Y,Z):- find_closest_num(X,99999,nil,Y, Z).%Dif - разница текущего с Y, Z - результат
@@ -54,3 +63,13 @@ find_closest_num([],_,Cur_z,_,Cur_z):- !.
 find_closest_num([H|T],Dif,Cur_z,Y,Z):- R is abs(H - Y), 
 (R<Dif, New_dif is R, New_z = H, find_closest_num(T,New_dif,New_z,Y,Z); 
 New_dif is Dif, find_closest_num(T,New_dif,Cur_z,Y,Z)).
+
+
+%если уникальный есть, то хотя бы 3 элемента в массиве
+find_unic_elem(X,Z) :- find_unic_elem(X,nil,Z).
+find_unic_elem([],Cur_Z,Cur_Z):- !.
+find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3\= nil, H1 \= H2, H1 \= H3, New_z = H1, find_unic_elem(T,New_z,Z).
+find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3\= nil, H2 \= H1, H2 \= H3, New_z = H2, find_unic_elem(T,New_z,Z).
+find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3\= nil, H3 \= H1, H3 \= H2, New_z = H3, find_unic_elem(T,New_z,Z).
+find_unic_elem([_|[_|[_|T]]],Cur_Z,Z):- find_unic_elem(T,Cur_Z,Z).
+find_unic_elem([_|_],Cur_Z,Cur_Z):- !. %второе дно 
