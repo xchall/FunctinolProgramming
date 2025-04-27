@@ -44,6 +44,11 @@ find_unic_element :-
 	find_unic_elem(X,Y),
 	write_answer(Y).
 
+find_two_min_elems :-
+	read_list(X),
+	find_two_min(X,Y,Z),
+	write_answer_two(Y,Z).
+
 read_list_and_num(X, Y) :-
     write('Enter list: '),
     read(X),
@@ -56,20 +61,34 @@ read_list(X) :-
 
 write_answer(R) :-
     write('Answer is: '), write(R), nl.
+write_answer_two(Y,Z):- 
+	write('Answer is: '), write(Y), nl, write(Z).
 
-%рекурсия вниз
+
+%35 рекурсия вниз 
 find_closest_num(X,Y,Z):- find_closest_num(X,99999,nil,Y, Z).%Dif - разница текущего с Y, Z - результат
 find_closest_num([],_,Cur_z,_,Cur_z):- !.
 find_closest_num([H|T],Dif,Cur_z,Y,Z):- R is abs(H - Y), 
 (R<Dif, New_dif is R, New_z = H, find_closest_num(T,New_dif,New_z,Y,Z); 
 New_dif is Dif, find_closest_num(T,New_dif,Cur_z,Y,Z)).
 
-
+%11
 %если уникальный есть, то хотя бы 3 элемента в массиве
 find_unic_elem(X,Z) :- find_unic_elem(X,nil,Z).
 find_unic_elem([],Cur_Z,Cur_Z):- !.
-find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3\= nil, H1 \= H2, H1 \= H3, New_z = H1, find_unic_elem(T,New_z,Z).
-find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3\= nil, H2 \= H1, H2 \= H3, New_z = H2, find_unic_elem(T,New_z,Z).
-find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3\= nil, H3 \= H1, H3 \= H2, New_z = H3, find_unic_elem(T,New_z,Z).
+find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H1 \= H2, H1 \= H3, New_z = H1, find_unic_elem(T,New_z,Z).
+find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H2 \= H1, H2 \= H3, New_z = H2, find_unic_elem(T,New_z,Z).
+find_unic_elem([H1|[H2|[H3|T]]],_,Z):- H3 \= H1, H3 \= H2, New_z = H3, find_unic_elem(T,New_z,Z).
 find_unic_elem([_|[_|[_|T]]],Cur_Z,Z):- find_unic_elem(T,Cur_Z,Z).
 find_unic_elem([_|_],Cur_Z,Cur_Z):- !. %второе дно 
+
+%23
+find_two_min(List, Min1, Min2) :- find_two_min(List, 999999, 999999, Min1, Min2).
+find_two_min([], Min1, Min2, Min1, Min2).
+find_two_min([H|T], Cur_min1, Cur_min2, Min1, Min2) :-
+    (H < Cur_min1, New_min2 = Cur_min1, New_min1 = H; 
+    H < Cur_min2, New_min1 = Cur_min1, New_min2 = H;
+    New_min1 = Cur_min1,New_min2 = Cur_min2),
+    find_two_min(T, New_min1, New_min2, Min1, Min2).
+
+
