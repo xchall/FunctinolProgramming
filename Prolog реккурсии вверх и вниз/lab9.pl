@@ -30,3 +30,27 @@ nod_down(X,0,X):- !.
 nod_down(0,Y,Y):- !.
 nod_down(X,Y,R):- X =< Y, Ost is Y mod X, nod_down(Ost,X,R).
 nod_down(X,Y,R):- X > Y, nod_down(Y,X,R).  
+
+%z3
+% 11 23 35
+
+find_closest_number :- %пишем только его в swi
+    read_list(X, Y),
+    find_closest_num(X,Y, Z),
+    write_answer(Z).
+
+read_list(X, Y) :-
+    write('Enter list: '),
+    read(X),
+    write('Enter number: '),
+    read(Y).
+
+write_answer(R) :-
+    write('Closest number is: '), write(R), nl.
+
+%рекурсия вниз
+find_closest_num(X,Y,Z):- find_closest_num(X,99999,nil,Y, Z).%Dif - разница текущего с Y, Z - результат
+find_closest_num([],_,Cur_z,_,Cur_z):- !.
+find_closest_num([H|T],Dif,Cur_z,Y,Z):- R is abs(H - Y), 
+(R<Dif, New_dif is R, New_z = H, find_closest_num(T,New_dif,New_z,Y,Z); 
+New_dif is Dif, find_closest_num(T,New_dif,Cur_z,Y,Z)).
