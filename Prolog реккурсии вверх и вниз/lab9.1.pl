@@ -32,4 +32,8 @@ sum_list([H|T], Cur_sum, X):- New_cur_sum is Cur_sum + H,
 sum_list(T, New_cur_sum,X).
 
 
-
+%удалять элементы списка равные переданному числу
+del_elems_equal_target(X,Y,Z):- del_elems_equal_target(X, Y, Z, []).
+del_elems_equal_target([], _, Cur_z, Cur_z):- !.
+del_elems_equal_target([H|T], Y, Z, Cur_z):-  sum_cifr_down(H,S), S \= Y, append(Cur_z, [H], New_cur_z), del_elems_equal_target(T, Y, Z, New_cur_z);
+S = Y,  del_elems_equal_target(T, Y, Z, Cur_z).
