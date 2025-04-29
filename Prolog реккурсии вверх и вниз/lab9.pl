@@ -108,11 +108,6 @@ amount_del_not_three(X,D, Cur_y, Y):- 0 is X mod D, Ost is D mod 3, 0 \= Ost, Ne
 amount_del_not_three(X,D, Cur_y, Y):- 0 is X mod D, New_d is D-1, amount_del_not_three(X, New_d, Cur_y, Y), !.
 amount_del_not_three(X,D, Cur_y, Y):- New_d is D-1, amount_del_not_three(X, New_d, Cur_y, Y).
 
-%
-amount_del(X,Y):- amount_del(X,X, 0, Y). %Проверяем простоту числа по количеству делителей
-amount_del(_,0, Cur_y, Cur_y):-!.
-amount_del(X,D, Cur_y, Y):- 0 is X mod D, New_cur_y is Cur_y+1, New_d is D-1, amount_del_not_three(X, New_d, New_cur_y, Y), !.
-amount_del(X,D, Cur_y, Y):- New_d is D-1, amount_del_not_three(X, New_d, Cur_y, Y).
 
 %реккурсия вниз
 sum_cifr_down(N,S):- sum_cifr_down(N,0,S).
@@ -133,3 +128,37 @@ sum_del_vzaimnoprost(_,0, Cur_y, Cur_y):-!.
 sum_del_vzaimnoprost(X,D, Cur_y, Y):- 0 is X mod D, sum_cifr_down(X,S1), pr_cifr_down(X,S2), nod_down(D,S1,R1), R1 = 1, nod_down(D,S2,R2), R2 > 1, 
 write(D), nl, New_cur_y is Cur_y+D, New_d is D-1, sum_del_vzaimnoprost(X, New_d, New_cur_y, Y).
 sum_del_vzaimnoprost(X,D, Cur_y, Y):- New_d is D-1, sum_del_vzaimnoprost(X, New_d, Cur_y, Y).
+
+%z6 47 59
+
+find_new_list:-
+    read_list(X),
+    go_through_main_spisok(X,Z),
+    write_answer(Z).
+find_new_list_kvadrats:-
+    read_list(X),
+    build_spisok_iz_kvadratov(X,Z),
+    write_answer(Z).
+
+%47
+add_to_spisok(X, List, List) :- member(X, List), !.
+add_to_spisok(X, List, [X|List]).
+
+del(X,Y,Z):- del(X,X,Y, Z).
+del(_, 0, Cur_y,Cur_y):-!.
+del(X,D, Cur_y, Y):- 0 is X mod D, add_to_spisok(D,Cur_y,R), New_d is D-1, del(X, New_d,R,Y), !.
+del(X,D, Cur_y, Y):- New_d is D-1, del(X, New_d, Cur_y, Y).
+
+go_through_main_spisok(X,Z):- go_through_main_spisok(X,[],Z). %X - основной список
+go_through_main_spisok([],Cur_z, Cur_z):-!.
+go_through_main_spisok([H|T],Cur_z, Z):- del(H,Cur_z,New_cur_z), go_through_main_spisok(T,New_cur_z, Z).
+
+%59
+more_than_two(X,C,Y):- more_than_two(X,C,0,Y).
+more_than_two([],_,Cur_y,Cur_y):-!.
+more_than_two([H|T],C,Cur_y,Y):- H = C, New_cur_y is Cur_y+1, more_than_two(T,C,New_cur_y,Y);more_than_two(T,C,Cur_y,Y).
+
+build_spisok_iz_kvadratov(X,Z):- build_spisok_iz_kvadratov(X,X,[],Z).
+build_spisok_iz_kvadratov([],_,Cur_z,Cur_z):-!.
+build_spisok_iz_kvadratov([H|T],X, Cur_z, Z):- H >= 0, H <100, more_than_two(X,H,R), R>2, Kv is H*H, add_to_spisok(Kv,Cur_z,New_cur_z),
+build_spisok_iz_kvadratov(T, X, New_cur_z, Z); build_spisok_iz_kvadratov(T, X, Cur_z, Z).
