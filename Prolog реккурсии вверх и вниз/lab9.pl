@@ -92,3 +92,44 @@ find_two_min([H|T], Cur_min1, Cur_min2, Min1, Min2) :-
     find_two_min(T, New_min1, New_min2, Min1, Min2).
 
 
+%z4
+%Воронов, Павлов, Левицкий и Сахаров. Один из них танцор, другой художник, третий-певец, а четвертый-писатель
+%1 -не танцор, 2 - не художник, 3 - не певец, 4 - не писатель,  Наличие цифры в списке у человека имеет этот смысл
+%[3,4] 
+%[2,4]
+%[3]
+%[4]
+%find_each_person_profession([3,4], [2,4], [3], [4]):- 
+
+%z5
+amount_del_not_three(X,Y):- amount_del_not_three(X,X, 0, Y).
+amount_del_not_three(_,0, Cur_y, Cur_y):-!.
+amount_del_not_three(X,D, Cur_y, Y):- 0 is X mod D, Ost is D mod 3, 0 \= Ost, New_cur_y is Cur_y+1, New_d is D-1, amount_del_not_three(X, New_d, New_cur_y, Y), !.
+amount_del_not_three(X,D, Cur_y, Y):- 0 is X mod D, New_d is D-1, amount_del_not_three(X, New_d, Cur_y, Y), !.
+amount_del_not_three(X,D, Cur_y, Y):- New_d is D-1, amount_del_not_three(X, New_d, Cur_y, Y).
+
+%
+amount_del(X,Y):- amount_del(X,X, 0, Y). %Проверяем простоту числа по количеству делителей
+amount_del(_,0, Cur_y, Cur_y):-!.
+amount_del(X,D, Cur_y, Y):- 0 is X mod D, New_cur_y is Cur_y+1, New_d is D-1, amount_del_not_three(X, New_d, New_cur_y, Y), !.
+amount_del(X,D, Cur_y, Y):- New_d is D-1, amount_del_not_three(X, New_d, Cur_y, Y).
+
+%реккурсия вниз
+sum_cifr_down(N,S):- sum_cifr_down(N,0,S).
+sum_cifr_down(0, Sum, Sum):-!. 
+sum_cifr_down(N,Cur_sum,Sum) :- Cifr is N mod 10, 
+N1 is N div 10, New_cur_sum is Cur_sum + Cifr,
+sum_cifr_down(N1,New_cur_sum,Sum).
+
+pr_cifr_down(N,S):- pr_cifr_down(N,1,S). 
+pr_cifr_down(0, Pr, Pr):-!. 
+pr_cifr_down(N,Cur_pr,Pr) :- Cifr is N mod 10, 
+N1 is N div 10, New_cur_pr is Cur_pr * Cifr,
+pr_cifr_down(N1,New_cur_pr,Pr).
+
+%взаимно простые значит НОД = 1
+sum_del_vzaimnoprost(X,Y):- sum_del_vzaimnoprost(X,X, 0, Y).
+sum_del_vzaimnoprost(_,0, Cur_y, Cur_y):-!.
+sum_del_vzaimnoprost(X,D, Cur_y, Y):- 0 is X mod D, sum_cifr_down(X,S1), pr_cifr_down(X,S2), nod_down(D,S1,R1), R1 = 1, nod_down(D,S2,R2), R2 > 1, 
+write(D), nl, New_cur_y is Cur_y+D, New_d is D-1, sum_del_vzaimnoprost(X, New_d, New_cur_y, Y).
+sum_del_vzaimnoprost(X,D, Cur_y, Y):- New_d is D-1, sum_del_vzaimnoprost(X, New_d, Cur_y, Y).
