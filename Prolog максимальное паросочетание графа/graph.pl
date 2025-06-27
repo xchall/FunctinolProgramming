@@ -1,4 +1,5 @@
-vertex_not_in_matching(Vertex, Matching) :- #проверяем что вершина Vertex не входит в паросочетание Matching
+#проверяем что вершина Vertex не входит в паросочетание Matching
+vertex_not_in_matching(Vertex, Matching) :- 
     \+ member((Vertex, _), Matching),
     \+ member((_, Vertex), Matching).
 
@@ -28,7 +29,8 @@ select_edge(Matching, U, V) :-
 
 
 % Нахождение паросочетания максимальной длины
-max_length([H|T], Max) :- %1аргумент - список найденных паросочетаний
+%1аргумент - список найденных паросочетаний
+max_length([H|T], Max) :- 
     length(H, Len),
     find_max(T, Len, H, Max).
 
